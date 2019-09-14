@@ -5,16 +5,49 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Lamp</title>
+    <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <div id="app"></div>
+    <div id="app">
+      <div class="lamp" v-on:click="toggle">
+        <div class="shade">
+          <div class="light" v-if="on" v-bind:style="style"></div>
+        </div>
+        <div class="base"></div>
+      </div>
+      <input type="range" min="0" max="1" step="0.01" v-model="brightness" />
+      brightness: {{ dimPercentage }} <input type="text" v-model="color" /> type
+      a valid CSS color here!
+    </div>
+
     <script src="./vue/vue.js"></script>
     <!-- <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script> -->
     <script>
       let app = new Vue({
         el: "#app",
-        data: {},
-        methods: {}
+        data: {
+          on: false,
+          color: "purple",
+          brightness: 1
+        },
+        computed: {
+          style: function() {
+            let styleObject = {
+              backgroundColor: this.color,
+              opacity: this.brightness
+            };
+
+            return styleObject;
+          },
+          dimPercentage: function() {
+            return Math.round(this.brightness * 100);
+          }
+        },
+        methods: {
+          toggle: function() {
+            this.on = !this.on;
+          }
+        }
       });
     </script>
   </body>
